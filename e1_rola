@@ -27,7 +27,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -82,7 +82,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -139,11 +139,52 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 9,
    "metadata": {},
-   "outputs": [],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "3840-02-03\n",
+      "3840-02-03\n",
+      "Error: la tupla debe tener 3 elementos.\n",
+      "None\n",
+      "Error: la tupla debe tener 3 elementos.\n",
+      "None\n",
+      "Error: la tupla debe tener solo enteros.\n",
+      "None\n"
+     ]
+    }
+   ],
    "source": [
-    "# Respuesta P1"
+    "dia1=date(1920,1,1)\n",
+    "class DateConSuma(date):\n",
+    "    @singledispatchmeth\n",
+    "    def __add__(self,other):\n",
+    "        new=super(DateConSuma,other)\n",
+    "        return DateConSuma(super().year+new.year,super().month+new.month,super().day+new.day)\n",
+    "    @__add__.register(tuple)\n",
+    "    def _(self,other):\n",
+    "        try:\n",
+    "            a,b,c=other\n",
+    "            aux=DateConSuma(super().year+a,super().month+b,super().day+c)\n",
+    "            return aux\n",
+    "        except (TypeError):\n",
+    "            print('Error: la tupla debe tener solo enteros.')\n",
+    "        except (ValueError):\n",
+    "            print('Error: la tupla debe tener 3 elementos.')\n",
+    "d1=DateConSuma(1920,1,1)\n",
+    "d2=DateConSuma(1920,1,2)\n",
+    "t1=tuple([1920,1,2])\n",
+    "t2=tuple([1920,1,2,3])\n",
+    "t3=tuple([1920,1])\n",
+    "t4=tuple([1920,1,2.5])\n",
+    "print(d1+d2)\n",
+    "print(d1+t1)\n",
+    "print(d1+t2)\n",
+    "print(d1+t3)\n",
+    "print(d1+t4)"
    ]
   },
   {
@@ -180,11 +221,56 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 31,
    "metadata": {},
-   "outputs": [],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Desde :1920-1-1 Hasta :1925-1-1\n",
+      "Desde :1925-1-1 Hasta :1930-1-1\n",
+      "Desde :1930-1-1 Hasta :1935-1-1\n",
+      "Desde :1935-1-1 Hasta :1940-1-1\n",
+      "Desde :1940-1-1 Hasta :1945-1-1\n",
+      "Desde :1945-1-1 Hasta :1950-1-1\n",
+      "Desde :1950-1-1 Hasta :1955-1-1\n",
+      "Desde :1955-1-1 Hasta :1960-1-1\n",
+      "Desde :1960-1-1 Hasta :1965-1-1\n",
+      "Desde :1965-1-1 Hasta :1970-1-1\n",
+      "Desde :1970-1-1 Hasta :1975-1-1\n",
+      "Desde :1975-1-1 Hasta :1980-1-1\n",
+      "Desde :1980-1-1 Hasta :1985-1-1\n",
+      "Desde :1985-1-1 Hasta :1990-1-1\n",
+      "Desde :1990-1-1 Hasta :1995-1-1\n",
+      "Desde :1995-1-1 Hasta :2000-1-1\n",
+      "Desde :2000-1-1 Hasta :2005-1-1\n",
+      "Desde :2005-1-1 Hasta :2010-1-1\n",
+      "Desde :2010-1-1 Hasta :2015-1-1\n"
+     ]
+    }
+   ],
    "source": [
-    "# Respuesta P2"
+    "# Respuesta P2\n",
+    "class IteratorFechas:\n",
+    "    def __init__(self,n):\n",
+    "        self.espaciado=n\n",
+    "        self.__desde_fecha=DateConSuma(1920,1,1)\n",
+    "        self.__hasta_fecha=DateConSuma(2020,1,1)\n",
+    "    def __iter__(self):\n",
+    "        return self\n",
+    "    def __next__(self):\n",
+    "        if self.__desde_fecha+(self.espaciado,0,0)<self.__hasta_fecha :\n",
+    "            aux=self.__desde_fecha\n",
+    "            self.__desde_fecha=self.__desde_fecha+(self.espaciado,0,0)\n",
+    "            return(aux,aux+(self.espaciado,0,0))\n",
+    "        else:\n",
+    "            raise StopIteration\n",
+    "iter_fechas=IteratorFechas(5)\n",
+    "for i in iter_fechas:\n",
+    "    d1=i[0]\n",
+    "    d2=i[1]\n",
+    "    print(\"Desde :\"+str(d1.year)+\"-\"+str(d1.month)+\"-\"+str(d1.day) +\" Hasta :\"+str(d2.year)+\"-\"+str(d2.month)+\"-\"+str(d2.day))"
    ]
   },
   {
@@ -721,7 +807,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.8.2"
+   "version": "3.7.3"
   },
   "nbTranslate": {
    "displayLangs": [
